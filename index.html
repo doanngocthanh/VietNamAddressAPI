@@ -1,121 +1,358 @@
 <!DOCTYPE html>
-<html lang="vi">
-<head>
+<html lang="vi">    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vietnam Address API - Documentation</title>
+    <meta name="author" content="Doan Ngoc Thanh">
+    <meta name="keywords" content="Vietnam Address API, API, Vietnam, địa chỉ, hành chính, tỉnh, thành phố, quận, huyện, phường, xã">
+    <meta name="theme-color" content="#007bff">
+    <meta property="og:title" content="Vietnam Address API - Documentation">
+    <meta property="og:description" content="API đơn giản để truy vấn dữ liệu hành chính Việt Nam (tỉnh/thành phố, quận/huyện, phường/xã) từ nguồn dữ liệu chính thức của Tổng cục Thống kê.">
+    <meta name="description" content="API đơn giản để truy vấn dữ liệu hành chính Việt Nam (tỉnh/thành phố, quận/huyện, phường/xã) từ nguồn dữ liệu chính thức của Tổng cục Thống kê.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css" rel="stylesheet">
-    <style>
-        .api-section {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            border-radius: 8px;
-            background-color: #f8f9fa;
-        }
-        .response-area {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .btn-try {
-            min-width: 100px;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="#">Vietnam Address API</a>
-        </div>
-    </nav>
-
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="mb-4">Vietnam Address API</h1>
-                <p class="lead">
-                    API đơn giản để truy vấn dữ liệu hành chính Việt Nam (tỉnh/thành phố, quận/huyện, phường/xã) 
-                    từ nguồn dữ liệu chính thức của Tổng cục Thống kê.
-                </p>
+<body>        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">🏛️ Vietnam Address API</a>
+                <div class="d-flex gap-3">
+                    <a href="https://github.com/doanngocthanh/VietNamAddressAPI" target="_blank" class="btn btn-outline-light btn-sm">
+                        <svg height="16" viewBox="0 0 16 16" width="16" style="vertical-align: text-top;">
+                            <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
             </div>
-        </div>
+        </nav>
 
-        <!-- API Base URL -->
-        <div class="alert alert-info">
-            <strong>Base URL:</strong>
-            <code id="apiUrl">https://script.google.com/macros/s/AKfycbwbuPEFL2TzdMPnJY-zPb1i8DZtTSwv7_Rl3ZNPBNlqYPGgNY9Myk6vvTOsVk2J5VXuoA/exec</code>
-        </div>
+        <div class="container my-5">
+            <div class="row justify-content-center mb-5">
+                <div class="col-12 col-lg-10 text-center">
+                    <h1 class="display-5 mb-4 fw-bold">Vietnam Address API</h1>
+                    <p class="lead text-secondary mb-4">
+                        API đơn giản để truy vấn dữ liệu hành chính Việt Nam (tỉnh/thành phố, quận/huyện, phường/xã) 
+                        từ nguồn dữ liệu chính thức của Tổng cục Thống kê.
+                    </p>
+                    <div class="alert alert-info">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <strong>Base URL:</strong>
+                            <code id="apiUrl" class="ms-2">https://script.google.com/macros/s/AKfycbwbuPEFL2TzdMPnJY-zPb1i8DZtTSwv7_Rl3ZNPBNlqYPGgNY9Myk6vvTOsVk2J5VXuoA/exec</code>
+                            <button class="btn btn-sm btn-outline-primary ms-2" onclick="copyCode('apiUrl')">Copy</button>
+                        </div>
+                        <div class="row g-2 justify-content-center">
+                            <div class="col-12 col-md-auto">
+                                <div class="d-flex align-items-center gap-2">
+                                    <strong>Ngày dữ liệu:</strong>
+                                    <input type="date" id="globalDate" class="form-control form-control-sm" 
+                                           style="width: 150px;" onchange="updateGlobalDate(this.value)">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-auto">
+                                <button class="btn btn-sm btn-outline-primary" onclick="preloadAllData()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download me-1" viewBox="0 0 16 16">
+                                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                    </svg>
+                                    Cache toàn bộ dữ liệu
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         <!-- Provinces Section -->
         <div class="api-section">
             <h3>1. Lấy danh sách tỉnh/thành phố</h3>
             <div class="mb-3">
-                <label class="form-label">Mã tỉnh (tùy chọn):</label>
-                <input type="text" class="form-control" id="provinceCode" placeholder="Ví dụ: 01">
+                <label class="form-label">Chọn tỉnh/thành phố:</label>
+                <select class="form-control" id="provinceSelect">
+                    <option value="">Tất cả tỉnh/thành phố</option>
+                </select>
             </div>
             <button class="btn btn-primary btn-try" onclick="fetchProvinces()">Thử ngay</button>
+            <div class="loading" id="provincesLoading"></div>
             <pre class="mt-3"><code class="language-json" id="provincesResponse">// Kết quả sẽ hiện ở đây...</code></pre>
+            <div class="code-sample position-relative">
+                <button class="btn btn-sm btn-light copy-btn" onclick="copyCode('provinceCode')">Copy</button>
+                <pre><code class="language-javascript" id="provinceCode">// Dữ liệu của ngày ${document.getElementById('globalDate').value}
+const response = await fetch('${API_URL}?path=provinces');
+const data = await response.json();
+console.log(data);</code></pre>
+            </div>
         </div>
 
         <!-- Districts Section -->
         <div class="api-section">
             <h3>2. Lấy danh sách quận/huyện</h3>
             <div class="mb-3">
-                <label class="form-label">Mã tỉnh:</label>
-                <input type="text" class="form-control" id="districtProvinceCode" placeholder="Ví dụ: 01" required>
+                <label class="form-label">Chọn tỉnh/thành phố:</label>
+                <select class="form-control" id="districtProvinceSelect">
+                    <option value="">Chọn tỉnh/thành phố</option>
+                </select>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Tên tỉnh:</label>
-                <input type="text" class="form-control" id="districtProvinceName" placeholder="Ví dụ: Hà Nội" required>
-            </div>
-            <button class="btn btn-primary btn-try" onclick="fetchDistricts()">Thử ngay</button>
+            <button class="btn btn-primary btn-try" onclick="fetchDistricts()" id="fetchDistrictsBtn" disabled>Thử ngay</button>
+            <div class="loading" id="districtsLoading"></div>
             <pre class="mt-3"><code class="language-json" id="districtsResponse">// Kết quả sẽ hiện ở đây...</code></pre>
+            <div class="code-sample position-relative">
+                <button class="btn btn-sm btn-light copy-btn" onclick="copyCode('districtCode')">Copy</button>
+                <pre><code class="language-javascript" id="districtCode">// Dữ liệu của ngày ${document.getElementById('globalDate').value}
+// Ví dụ với Hà Nội
+const response = await fetch('${API_URL}?path=districts&matinh=01&tentinh=Hà Nội');
+const data = await response.json();
+console.log(data);</code></pre>
+            </div>
         </div>
 
         <!-- Wards Section -->
         <div class="api-section">
             <h3>3. Lấy danh sách phường/xã</h3>
             <div class="mb-3">
-                <label class="form-label">Mã tỉnh:</label>
-                <input type="text" class="form-control" id="wardProvinceCode" placeholder="Ví dụ: 01" required>
+                <label class="form-label">Chọn tỉnh/thành phố:</label>
+                <select class="form-control" id="wardProvinceSelect">
+                    <option value="">Chọn tỉnh/thành phố</option>
+                </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Tên tỉnh:</label>
-                <input type="text" class="form-control" id="wardProvinceName" placeholder="Ví dụ: Hà Nội" required>
+                <label class="form-label">Chọn quận/huyện:</label>
+                <select class="form-control" id="wardDistrictSelect" disabled>
+                    <option value="">Chọn quận/huyện</option>
+                </select>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Mã huyện:</label>
-                <input type="text" class="form-control" id="wardDistrictCode" placeholder="Ví dụ: 001" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Tên huyện:</label>
-                <input type="text" class="form-control" id="wardDistrictName" placeholder="Ví dụ: Quận Ba Đình" required>
-            </div>
-            <button class="btn btn-primary btn-try" onclick="fetchWards()">Thử ngay</button>
+            <button class="btn btn-primary btn-try" onclick="fetchWards()" id="fetchWardsBtn" disabled>Thử ngay</button>
+            <div class="loading" id="wardsLoading"></div>
             <pre class="mt-3"><code class="language-json" id="wardsResponse">// Kết quả sẽ hiện ở đây...</code></pre>
+            <div class="code-sample position-relative">
+                <button class="btn btn-sm btn-light copy-btn" onclick="copyCode('wardCode')">Copy</button>
+                <pre><code class="language-javascript" id="wardCode">// Dữ liệu của ngày ${document.getElementById('globalDate').value}
+// Ví dụ với phường/xã thuộc Quận Ba Đình, Hà Nội
+const response = await fetch('${API_URL}?path=wards&matinh=01&tentinh=Hà Nội&mahuyen=001&tenhuyen=Quận Ba Đình');
+const data = await response.json();
+console.log(data);</code></pre>
+            </div>
         </div>
 
         <!-- All Data Section -->
         <div class="api-section">
             <h3>4. Lấy toàn bộ dữ liệu</h3>
             <div class="alert alert-warning">
-                Lưu ý: API này có thể mất một thời gian để trả về kết quả do phải tải toàn bộ dữ liệu.
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle me-2" viewBox="0 0 16 16">
+                    <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
+                    <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
+                </svg>
+                <span>API này có thể mất một thời gian để trả về kết quả do phải tải toàn bộ dữ liệu.</span>
             </div>
-            <button class="btn btn-primary btn-try" onclick="fetchAll()">Thử ngay</button>
+            <button class="btn btn-primary btn-try" onclick="fetchAll()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-download me-2" viewBox="0 0 16 16">
+                    <path d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/>
+                    <path d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/>
+                </svg>
+                Tải toàn bộ dữ liệu
+            </button>
+            <div class="loading" id="allLoading"></div>
             <pre class="mt-3"><code class="language-json" id="allResponse">// Kết quả sẽ hiện ở đây...</code></pre>
+            <div class="code-sample position-relative">
+                <button class="btn btn-sm btn-light copy-btn" onclick="copyCode('allCode')">Copy</button>
+                <pre><code class="language-javascript" id="allCode">// Dữ liệu của ngày ${document.getElementById('globalDate').value}
+// Lấy toàn bộ dữ liệu hành chính
+const response = await fetch('${API_URL}?path=all');
+const data = await response.json();
+console.log(data);</code></pre>
+            </div>
         </div>
     </div>
 
-    <footer class="bg-light py-3 mt-5">
-        <div class="container text-center">
-            <p>© 2025 Vietnam Address API. MIT License.</p>
+    <footer class="py-4 mt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-12 col-md-6 text-center text-md-start">
+                    <p class="mb-0">© 2025 Vietnam Address API</p>
+                </div>
+                <div class="col-12 col-md-6 text-center text-md-end mt-3 mt-md-0">
+                    <a href="https://github.com/doanngocthanh/VietNamAddressAPI/blob/main/LICENSE" class="text-decoration-none text-secondary">MIT License</a>
+                    <span class="mx-2">•</span>
+                    <a href="https://github.com/doanngocthanh/VietNamAddressAPI" class="text-decoration-none text-secondary">GitHub</a>
+                </div>
+            </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbwbuPEFL2TzdMPnJY-zPb1i8DZtTSwv7_Rl3ZNPBNlqYPGgNY9Myk6vvTOsVk2J5VXuoA/exec';
+        let provinces = [];
+        let districts = [];
+        let cachedData = {
+            date: null,
+            provinces: null,
+            districts: {},
+            wards: {}
+        };
+        
+        // Format date as DD/MM/YYYY
+        function formatDate(date) {
+            const d = new Date(date);
+            return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+        }
+
+        // Get today's date in YYYY-MM-DD format for input[type="date"]
+        function getTodayDate() {
+            const today = new Date();
+            return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        }
+
+        // Initialize date input with today's date
+        function initializeDateInput() {
+            const dateInput = document.getElementById('globalDate');
+            dateInput.value = getTodayDate();
+            dateInput.max = getTodayDate(); // Prevent future dates
+        }
+
+        // Update global date and clear cache if date changes
+        function updateGlobalDate(newDate) {
+            if (newDate !== cachedData.date) {
+                cachedData = {
+                    date: newDate,
+                    provinces: null,
+                    districts: {},
+                    wards: {}
+                };
+                loadProvinces(); // Reload provinces with new date
+            }
+        }
+
+        // Preload all data for faster subsequent access
+        async function preloadAllData() {
+            const loadingBtn = document.querySelector('button[onclick="preloadAllData()"]');
+            const originalText = loadingBtn.innerHTML;
+            loadingBtn.disabled = true;
+            loadingBtn.innerHTML = `
+                <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                Đang tải dữ liệu...
+            `;
+
+            try {
+                const date = formatDate(document.getElementById('globalDate').value);
+                const allData = await fetchData({ path: 'all', date: date });
+                
+                if (allData.success) {
+                    cachedData = {
+                        date: document.getElementById('globalDate').value,
+                        provinces: allData.data.provinces,
+                        districts: {},
+                        wards: {}
+                    };
+
+                    // Cache districts by province
+                    allData.data.districts.forEach(district => {
+                        const key = district.MaTinh;
+                        if (!cachedData.districts[key]) {
+                            cachedData.districts[key] = [];
+                        }
+                        cachedData.districts[key].push(district);
+                    });
+
+                    // Cache wards by district
+                    allData.data.wards.forEach(ward => {
+                        const key = `${ward.MaTinh}_${ward.MaQuanHuyen}`;
+                        if (!cachedData.wards[key]) {
+                            cachedData.wards[key] = [];
+                        }
+                        cachedData.wards[key].push(ward);
+                    });
+
+                    // Update provinces in UI
+                    provinces = cachedData.provinces;
+                    updateProvincesInUI();
+
+                    alert('Đã tải và cache toàn bộ dữ liệu thành công!');
+                }
+            } catch (error) {
+                console.error('Error preloading data:', error);
+                alert('Có lỗi khi tải dữ liệu. Vui lòng thử lại sau.');
+            }
+
+            loadingBtn.disabled = false;
+            loadingBtn.innerHTML = originalText;
+        }
+
+        // Update all province selects with new data
+        function updateProvincesInUI() {
+            const provinceSelects = ['provinceSelect', 'districtProvinceSelect', 'wardProvinceSelect'];
+            provinceSelects.forEach(selectId => {
+                const select = $(`#${selectId}`);
+                select.empty().append('<option value="">Chọn tỉnh/thành phố</option>');
+                provinces.forEach(province => {
+                    select.append(new Option(
+                        `${province.TenTinh} (${province.MaTinh})`,
+                        province.MaTinh,
+                        false,
+                        false
+                    ));
+                });
+                select.trigger('change');
+            });
+        }
+
+        $(document).ready(function() {
+            initializeSelects();
+            initializeDateInput();
+            loadProvinces();
+            setupEventListeners();
+        });
+
+        function initializeSelects() {
+            $('#provinceSelect').select2({
+                placeholder: "Chọn tỉnh/thành phố",
+                allowClear: true
+            });
+
+            $('#districtProvinceSelect, #wardProvinceSelect').select2({
+                placeholder: "Chọn tỉnh/thành phố",
+                allowClear: true
+            });
+
+            $('#wardDistrictSelect').select2({
+                placeholder: "Chọn quận/huyện",
+                allowClear: true
+            });
+        }
+
+        function setupEventListeners() {
+            $('#districtProvinceSelect').on('change', function() {
+                const selectedProvince = provinces.find(p => p.MaTinh === this.value);
+                if (selectedProvince) {
+                    loadDistricts(selectedProvince.MaTinh, selectedProvince.TenTinh);
+                    $('#fetchDistrictsBtn').prop('disabled', false);
+                } else {
+                    $('#fetchDistrictsBtn').prop('disabled', true);
+                }
+            });
+
+            $('#wardProvinceSelect').on('change', function() {
+                const selectedProvince = provinces.find(p => p.MaTinh === this.value);
+                if (selectedProvince) {
+                    loadDistricts(selectedProvince.MaTinh, selectedProvince.TenTinh, 'ward');
+                    $('#wardDistrictSelect').prop('disabled', false);
+                } else {
+                    $('#wardDistrictSelect').prop('disabled', true);
+                    $('#wardDistrictSelect').val('').trigger('change');
+                }
+            });
+
+            $('#wardDistrictSelect').on('change', function() {
+                $('#fetchWardsBtn').prop('disabled', !this.value);
+            });
+        }
 
         function formatResponse(response) {
             return JSON.stringify(response, null, 2);
@@ -127,78 +364,196 @@
             Prism.highlightElement(element);
         }
 
+        function setLoading(section, isLoading) {
+            $(`#${section}Loading`).toggleClass('active', isLoading);
+        }
+
+        function copyCode(elementId) {
+            const code = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.querySelector(`[onclick="copyCode('${elementId}')"]`);
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy', 2000);
+            });
+        }
+
+        function updateProvinceCodeExample(provinceCode) {
+            const date = formatDate(document.getElementById('globalDate').value);
+            const code = provinceCode 
+                ? `// Dữ liệu của ngày ${date}\nconst response = await fetch('${API_URL}?path=provinces&matinh=${provinceCode}&date=${date}');`
+                : `// Dữ liệu của ngày ${date}\nconst response = await fetch('${API_URL}?path=provinces&date=${date}');`;
+            document.getElementById('provinceCode').textContent = 
+                code + '\nconst data = await response.json();\nconsole.log(data);';
+            Prism.highlightElement(document.getElementById('provinceCode'));
+        }
+
+        function updateDistrictCodeExample(province) {
+            const date = formatDate(document.getElementById('globalDate').value);
+            const code = 
+`// Dữ liệu của ngày ${date}
+const response = await fetch('${API_URL}?path=districts&matinh=${province.MaTinh}&tentinh=${province.TenTinh}&date=${date}');
+const data = await response.json();
+console.log(data);`;
+            document.getElementById('districtCode').textContent = code;
+            Prism.highlightElement(document.getElementById('districtCode'));
+        }
+
+        function updateWardCodeExample(province, district) {
+            const date = formatDate(document.getElementById('globalDate').value);
+            const code = 
+`// Dữ liệu của ngày ${date}
+const response = await fetch('${API_URL}?path=wards&matinh=${province.MaTinh}&tentinh=${province.TenTinh}&mahuyen=${district.code}&tenhuyen=${district.name}&date=${date}');
+const data = await response.json();
+console.log(data);`;
+            document.getElementById('wardCode').textContent = code;
+            Prism.highlightElement(document.getElementById('wardCode'));
+        }
+
         async function fetchData(params) {
             const queryString = new URLSearchParams(params).toString();
             const response = await fetch(`${API_URL}?${queryString}`);
             return await response.json();
         }
 
+        async function loadProvinces() {
+            setLoading('provinces', true);
+            try {
+                const date = formatDate(document.getElementById('globalDate').value);
+                
+                // Check cache first
+                if (cachedData.provinces && cachedData.date === document.getElementById('globalDate').value) {
+                    provinces = cachedData.provinces;
+                    updateProvincesInUI();
+                } else {
+                    const data = await fetchData({ path: 'provinces', date: date });
+                    provinces = data.data;
+                    cachedData.provinces = provinces;
+                    cachedData.date = document.getElementById('globalDate').value;
+                    updateProvincesInUI();
+                }
+            } catch (error) {
+                console.error('Error loading provinces:', error);
+            }
+            setLoading('provinces', false);
+        }
+
+        async function loadDistricts(maTinh, tenTinh, target = 'district') {
+            setLoading(`${target}s`, true);
+            try {
+                const date = formatDate(document.getElementById('globalDate').value);
+                let districtData;
+
+                // Check cache first
+                if (cachedData.districts[maTinh] && cachedData.date === document.getElementById('globalDate').value) {
+                    districtData = cachedData.districts[maTinh];
+                } else {
+                    const data = await fetchData({
+                        path: 'districts',
+                        matinh: maTinh,
+                        tentinh: tenTinh,
+                        date: date
+                    });
+                    districtData = data.data;
+                    cachedData.districts[maTinh] = districtData;
+                }
+                
+                if (target === 'ward') {
+                    const select = $('#wardDistrictSelect');
+                    select.empty().append('<option value="">Chọn quận/huyện</option>');
+                    districtData.forEach(district => {
+                        select.append(new Option(
+                            `${district.TenQuanHuyen} (${district.MaQuanHuyen})`,
+                            JSON.stringify({
+                                code: district.MaQuanHuyen,
+                                name: district.TenQuanHuyen
+                            }),
+                            false,
+                            false
+                        ));
+                    });
+                    select.trigger('change');
+                }
+                districts = districtData;
+            } catch (error) {
+                console.error('Error loading districts:', error);
+            }
+            setLoading(`${target}s`, false);
+        }
+
         async function fetchProvinces() {
-            const provinceCode = document.getElementById('provinceCode').value;
+            const selectedProvince = $('#provinceSelect').val();
             const params = { path: 'provinces' };
-            if (provinceCode) params.matinh = provinceCode;
+            if (selectedProvince) params.matinh = selectedProvince;
             
+            setLoading('provinces', true);
             try {
                 const data = await fetchData(params);
                 updateCode('provincesResponse', data);
+                updateProvinceCodeExample(selectedProvince);
             } catch (error) {
                 updateCode('provincesResponse', { error: error.message });
             }
+            setLoading('provinces', false);
         }
 
         async function fetchDistricts() {
-            const maTinh = document.getElementById('districtProvinceCode').value;
-            const tenTinh = document.getElementById('districtProvinceName').value;
-
-            if (!maTinh || !tenTinh) {
-                alert('Vui lòng nhập đầy đủ mã tỉnh và tên tỉnh');
+            const province = provinces.find(p => p.MaTinh === $('#districtProvinceSelect').val());
+            if (!province) {
+                alert('Vui lòng chọn tỉnh/thành phố');
                 return;
             }
 
+            setLoading('districts', true);
             try {
                 const data = await fetchData({
                     path: 'districts',
-                    matinh: maTinh,
-                    tentinh: tenTinh
+                    matinh: province.MaTinh,
+                    tentinh: province.TenTinh
                 });
                 updateCode('districtsResponse', data);
+                updateDistrictCodeExample(province);
             } catch (error) {
                 updateCode('districtsResponse', { error: error.message });
             }
+            setLoading('districts', false);
         }
 
         async function fetchWards() {
-            const maTinh = document.getElementById('wardProvinceCode').value;
-            const tenTinh = document.getElementById('wardProvinceName').value;
-            const maHuyen = document.getElementById('wardDistrictCode').value;
-            const tenHuyen = document.getElementById('wardDistrictName').value;
-
-            if (!maTinh || !tenTinh || !maHuyen || !tenHuyen) {
-                alert('Vui lòng nhập đầy đủ thông tin');
+            const province = provinces.find(p => p.MaTinh === $('#wardProvinceSelect').val());
+            const districtJson = $('#wardDistrictSelect').val();
+            
+            if (!province || !districtJson) {
+                alert('Vui lòng chọn đầy đủ thông tin');
                 return;
             }
 
+            const district = JSON.parse(districtJson);
+            setLoading('wards', true);
             try {
                 const data = await fetchData({
                     path: 'wards',
-                    matinh: maTinh,
-                    tentinh: tenTinh,
-                    mahuyen: maHuyen,
-                    tenhuyen: tenHuyen
+                    matinh: province.MaTinh,
+                    tentinh: province.TenTinh,
+                    mahuyen: district.code,
+                    tenhuyen: district.name
                 });
                 updateCode('wardsResponse', data);
+                updateWardCodeExample(province, district);
             } catch (error) {
                 updateCode('wardsResponse', { error: error.message });
             }
+            setLoading('wards', false);
         }
 
         async function fetchAll() {
+            setLoading('all', true);
             try {
                 const data = await fetchData({ path: 'all' });
                 updateCode('allResponse', data);
             } catch (error) {
                 updateCode('allResponse', { error: error.message });
             }
+            setLoading('all', false);
         }
     </script>
 </body>

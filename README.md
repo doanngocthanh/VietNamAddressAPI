@@ -1,10 +1,12 @@
 # VietNamAddressAPI
 
-API đơn giản để truy vấn dữ liệu hành chính Việt Nam (tỉnh/thành phố, quận/huyện, phường/xã) từ nguồn dữ liệu chính thức của Tổng cục Thống kê.
+API đơn giản để truy vấn dữ liệu hành chính Việt Nam (tỉnh/thành phố, quận/huyện, phường/xã) từ nguồn dữ liệu chính thức của Tổng cục Thống kê. 
+Sử dụng google apps script để triển khai api này.
 
 ## 🔗 Demo
 
 Bạn có thể thử nghiệm API tại đây:  
+[https://doanngocthanh.github.io/VietNamAddressAPI/](https://doanngocthanh.github.io/VietNamAddressAPI/)
 [https://script.google.com/macros/s/AKfycbwbuPEFL2TzdMPnJY-zPb1i8DZtTSwv7_Rl3ZNPBNlqYPGgNY9Myk6vvTOsVk2J5VXuoA/exec](https://script.google.com/macros/s/AKfycbwbuPEFL2TzdMPnJY-zPb1i8DZtTSwv7_Rl3ZNPBNlqYPGgNY9Myk6vvTOsVk2J5VXuoA/exec)
 
 ## 📖 Tính năng
