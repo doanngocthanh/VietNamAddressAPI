@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vietnam Address API - Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css" rel="stylesheet">
+    <style>
+        .api-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .response-area {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .btn-try {
+            min-width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Vietnam Address API</a>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4">Vietnam Address API</h1>
+                <p class="lead">
+                    API đơn giản để truy vấn dữ liệu hành chính Việt Nam (tỉnh/thành phố, quận/huyện, phường/xã) 
+                    từ nguồn dữ liệu chính thức của Tổng cục Thống kê.
+                </p>
+            </div>
+        </div>
+
+        <!-- API Base URL -->
+        <div class="alert alert-info">
+            <strong>Base URL:</strong>
+            <code id="apiUrl">https://script.google.com/macros/s/AKfycbwbuPEFL2TzdMPnJY-zPb1i8DZtTSwv7_Rl3ZNPBNlqYPGgNY9Myk6vvTOsVk2J5VXuoA/exec</code>
+        </div>
+
+        <!-- Provinces Section -->
+        <div class="api-section">
+            <h3>1. Lấy danh sách tỉnh/thành phố</h3>
+            <div class="mb-3">
+                <label class="form-label">Mã tỉnh (tùy chọn):</label>
+                <input type="text" class="form-control" id="provinceCode" placeholder="Ví dụ: 01">
+            </div>
+            <button class="btn btn-primary btn-try" onclick="fetchProvinces()">Thử ngay</button>
+            <pre class="mt-3"><code class="language-json" id="provincesResponse">// Kết quả sẽ hiện ở đây...</code></pre>
+        </div>
+
+        <!-- Districts Section -->
+        <div class="api-section">
+            <h3>2. Lấy danh sách quận/huyện</h3>
+            <div class="mb-3">
+                <label class="form-label">Mã tỉnh:</label>
+                <input type="text" class="form-control" id="districtProvinceCode" placeholder="Ví dụ: 01" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tên tỉnh:</label>
+                <input type="text" class="form-control" id="districtProvinceName" placeholder="Ví dụ: Hà Nội" required>
+            </div>
+            <button class="btn btn-primary btn-try" onclick="fetchDistricts()">Thử ngay</button>
+            <pre class="mt-3"><code class="language-json" id="districtsResponse">// Kết quả sẽ hiện ở đây...</code></pre>
+        </div>
+
+        <!-- Wards Section -->
+        <div class="api-section">
+            <h3>3. Lấy danh sách phường/xã</h3>
+            <div class="mb-3">
+                <label class="form-label">Mã tỉnh:</label>
+                <input type="text" class="form-control" id="wardProvinceCode" placeholder="Ví dụ: 01" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tên tỉnh:</label>
+                <input type="text" class="form-control" id="wardProvinceName" placeholder="Ví dụ: Hà Nội" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Mã huyện:</label>
+                <input type="text" class="form-control" id="wardDistrictCode" placeholder="Ví dụ: 001" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tên huyện:</label>
+                <input type="text" class="form-control" id="wardDistrictName" placeholder="Ví dụ: Quận Ba Đình" required>
+            </div>
+            <button class="btn btn-primary btn-try" onclick="fetchWards()">Thử ngay</button>
+            <pre class="mt-3"><code class="language-json" id="wardsResponse">// Kết quả sẽ hiện ở đây...</code></pre>
+        </div>
+
+        <!-- All Data Section -->
+        <div class="api-section">
+            <h3>4. Lấy toàn bộ dữ liệu</h3>
+            <div class="alert alert-warning">
+                Lưu ý: API này có thể mất một thời gian để trả về kết quả do phải tải toàn bộ dữ liệu.
+            </div>
+            <button class="btn btn-primary btn-try" onclick="fetchAll()">Thử ngay</button>
+            <pre class="mt-3"><code class="language-json" id="allResponse">// Kết quả sẽ hiện ở đây...</code></pre>
+        </div>
+    </div>
+
+    <footer class="bg-light py-3 mt-5">
+        <div class="container text-center">
+            <p>© 2025 Vietnam Address API. MIT License.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwbuPEFL2TzdMPnJY-zPb1i8DZtTSwv7_Rl3ZNPBNlqYPGgNY9Myk6vvTOsVk2J5VXuoA/exec';
+
+        function formatResponse(response) {
+            return JSON.stringify(response, null, 2);
+        }
+
+        function updateCode(elementId, data) {
+            const element = document.getElementById(elementId);
+            element.textContent = formatResponse(data);
+            Prism.highlightElement(element);
+        }
+
+        async function fetchData(params) {
+            const queryString = new URLSearchParams(params).toString();
+            const response = await fetch(`${API_URL}?${queryString}`);
+            return await response.json();
+        }
+
+        async function fetchProvinces() {
+            const provinceCode = document.getElementById('provinceCode').value;
+            const params = { path: 'provinces' };
+            if (provinceCode) params.matinh = provinceCode;
+            
+            try {
+                const data = await fetchData(params);
+                updateCode('provincesResponse', data);
+            } catch (error) {
+                updateCode('provincesResponse', { error: error.message });
+            }
+        }
+
+        async function fetchDistricts() {
+            const maTinh = document.getElementById('districtProvinceCode').value;
+            const tenTinh = document.getElementById('districtProvinceName').value;
+
+            if (!maTinh || !tenTinh) {
+                alert('Vui lòng nhập đầy đủ mã tỉnh và tên tỉnh');
+                return;
+            }
+
+            try {
+                const data = await fetchData({
+                    path: 'districts',
+                    matinh: maTinh,
+                    tentinh: tenTinh
+                });
+                updateCode('districtsResponse', data);
+            } catch (error) {
+                updateCode('districtsResponse', { error: error.message });
+            }
+        }
+
+        async function fetchWards() {
+            const maTinh = document.getElementById('wardProvinceCode').value;
+            const tenTinh = document.getElementById('wardProvinceName').value;
+            const maHuyen = document.getElementById('wardDistrictCode').value;
+            const tenHuyen = document.getElementById('wardDistrictName').value;
+
+            if (!maTinh || !tenTinh || !maHuyen || !tenHuyen) {
+                alert('Vui lòng nhập đầy đủ thông tin');
+                return;
+            }
+
+            try {
+                const data = await fetchData({
+                    path: 'wards',
+                    matinh: maTinh,
+                    tentinh: tenTinh,
+                    mahuyen: maHuyen,
+                    tenhuyen: tenHuyen
+                });
+                updateCode('wardsResponse', data);
+            } catch (error) {
+                updateCode('wardsResponse', { error: error.message });
+            }
+        }
+
+        async function fetchAll() {
+            try {
+                const data = await fetchData({ path: 'all' });
+                updateCode('allResponse', data);
+            } catch (error) {
+                updateCode('allResponse', { error: error.message });
+            }
+        }
+    </script>
+</body>
+</html>
